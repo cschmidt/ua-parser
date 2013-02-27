@@ -6,3 +6,7 @@ cabal-dev
 *.pyc
 build/
 py/ua_parser.egg-info/
+.classpath
+.externalToolBuilders/
+.project
+target/
