@@ -42,8 +42,11 @@ public class DeviceParser {
         break;
       }
     }
-
-    return new Device(device);
+    if (device != null) {
+        return new Device(device);
+    } else {
+        return new Device("Other");
+    }
   }
 
   public static DeviceParser fromList(List<Map> configList) {
