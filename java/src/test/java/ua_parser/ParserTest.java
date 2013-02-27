@@ -34,7 +34,7 @@ import static org.junit.Assert.*;
  * @author Steve Jiang (@sjiang) <gh at iamsteve com>
  */
 public class ParserTest {
-  final String TEST_RESOURCE_PATH = "/ua_parser/";
+  final String TEST_RESOURCE_PATH = "/";
   Yaml yaml = new Yaml();
   Parser parser;
 
@@ -81,7 +81,7 @@ public class ParserTest {
 
     Client expected1 = new Client(new UserAgent("Firefox", "3", "5", "5"),
                                   new OS("Mac OS X", "10", "4", null, null),
-                                  new Device(null));
+                                  new Device("Other"));
     Client expected2 = new Client(new UserAgent("Mobile Safari", "5", "1", null),
                                   new OS("iOS", "5", "1", "1", null),
                                   new Device("iPhone"));
@@ -121,8 +121,10 @@ public class ParserTest {
     for(Map<String, String> testCase : testCases) {
       // Skip tests with js_ua as those overrides are not yet supported in java
       if (testCase.containsKey("js_ua")) continue;
-
-      assertThat(parser.parseUserAgent(testCase.get("user_agent_string")), is(UserAgent.fromMap(testCase)));
+      String userAgentString = testCase.get("user_agent_string");
+      assertThat("When parsing [" + userAgentString + "]", 
+                 parser.parseUserAgent(userAgentString), 
+                 is(UserAgent.fromMap(testCase)));
     }
   }
 
@@ -143,7 +145,8 @@ public class ParserTest {
 
     List<Map> testCases = (List<Map>) ((Map)yaml.load(yamlStream)).get("test_cases");
     for(Map<String, Object> testCase : testCases) {
-      assertThat(parser.parseDevice((String)testCase.get("user_agent_string")), is(Device.fromMap(testCase)));
+      String userAgentString = (String)testCase.get("user_agent_string");
+      assertThat(userAgentString, parser.parseDevice(userAgentString), is(Device.fromMap(testCase)));
     }
   }
 

@@ -16,6 +16,8 @@
 
 package ua_parser;
 
+import org.junit.Test;
+
 /**
  * @author Steve Jiang (@sjiang) <gh at iamsteve com>
  */
